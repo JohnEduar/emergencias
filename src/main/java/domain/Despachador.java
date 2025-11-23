@@ -17,7 +17,7 @@ public class Despachador implements  Runnable {
             while (true) {
                 Emergencia emergencia = cola.tomar();
 
-                System.out.printf("Despachador %s despachó emergencia %d (Gravedad: %s, Distancia: %.1f km, Puntaje: %.2f)%n",
+                System.out.printf("%s despachó emergencia %d (Gravedad: %s, Distancia: %.1f km, Puntaje: %.2f)%n-----------------------------------------------------------------------%n",
                         nombre, emergencia.getId(), emergencia.getGravedad(), emergencia.getDistanciaKm(), emergencia.getPuntaje());
                 // Simular tiempo de despacho
                 Thread.sleep(2000);

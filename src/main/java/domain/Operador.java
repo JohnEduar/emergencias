@@ -39,10 +39,11 @@ public class Operador implements Runnable {
                 // Agregar emergencia a la cola
                 boolean agregada = cola.agregar(emergencia);
                 if (agregada) {
-                    System.out.printf("Operador %s agregó emergencia %d (Gravedad: %s, Distancia: %.1f km, Puntaje: %.2f%n",
+                    System.out.printf("%s agregó emergencia %d (Gravedad: %s, Distancia: %.1f km, Puntaje: %.2f%n-----------------------------------------------------------------------%n",
                             nombre, emergencia.getId(), gravedad, distanciaKm, puntaje);
                 } else {
-                    System.out.printf("Operador %s no pudo agregar emergencia %d: cola llena.%n", nombre, emergencia.getId());
+                    System.out.printf("%s no pudo agregar emergencia %d: cola llena.%n-----------------------------------------------------------------------%n",
+                            nombre, emergencia.getId());
                 }
 
                 // Esperar un tiempo antes de generar la siguiente emergencia
