@@ -1,7 +1,6 @@
-package domain;
+package domain.recurso;
 
 import java.util.List;
-import java.util.Optional;
 
 public class GestorRecursos {
     private final List<Recurso> recursos;

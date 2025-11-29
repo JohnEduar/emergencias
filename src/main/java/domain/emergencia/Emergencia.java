@@ -1,4 +1,4 @@
-package domain;
+package domain.emergencia;
 
 public final class Emergencia implements Comparable<Emergencia> {
 
@@ -6,6 +6,7 @@ public final class Emergencia implements Comparable<Emergencia> {
     private final Gravedad gravedad;
     private final double distanciaKm;
     private final long recibidaEnMs;
+    private long timestampCreacion;
 
     private volatile double puntaje;
     private volatile long ultimaActualizacionEnMs;
@@ -17,6 +18,7 @@ public final class Emergencia implements Comparable<Emergencia> {
         this.recibidaEnMs = recibidaEnMs;
         this.puntaje = 0.0;
         this.ultimaActualizacionEnMs = recibidaEnMs;
+        this.timestampCreacion = System.currentTimeMillis();
     }
 
     // Mayor puntaje primero
@@ -47,6 +49,10 @@ public final class Emergencia implements Comparable<Emergencia> {
 
     public long getUltimaActualizacionEnMs() {
         return ultimaActualizacionEnMs;
+    }
+
+    public long getTimestampCreacion() {
+        return timestampCreacion;
     }
 
     // Actualización controlada de puntaje

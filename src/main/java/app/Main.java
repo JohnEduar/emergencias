@@ -1,12 +1,25 @@
 package app;
 
-import domain.*;
+import domain.emergencia.ColaEmergencias;
+import domain.emergencia.MotorPrioridad;
+import domain.recurso.GestorRecursos;
+import domain.recurso.Recurso;
+import domain.recurso.TipoRecurso;
+import domain.sistema.Despachador;
+import domain.sistema.Metricas;
+import domain.sistema.Operador;
+import domain.sistema.RecalculadorPrioridades;
+
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Sistema de Gestión de Emergencias iniciado.");
+
+        Dashboard dashboard = new Dashboard();
+        dashboard.mostrar();
+
         // Crear la cola con la capacidad máxima
         ColaEmergencias cola = new ColaEmergencias(50);
 
@@ -31,16 +44,26 @@ public class Main {
                 new Recurso(9, TipoRecurso.MEDICO),
                 new Recurso(10, TipoRecurso.MEDICO)
         );
+        // Actualizar métricas iniciales y dashboard
+        Metricas.recursosLibres.set(recursos.size());
+        for (Recurso r : recursos) {
+            dashboard.agregarRecurso(new Object[]{
+                    r.getId(),
+                    r.getTipo(),
+                    "LIBRE"
+            });
+        }
         GestorRecursos gestor = new GestorRecursos(recursos);
 
-        // Aquí se podrían iniciar los hilos de Operadores, Despachadores y Recalculador de Prioridades
-        Thread operador1 = new Thread(new Operador("Operador-1", cola, motor));
-        Thread operador2 = new Thread(new Operador("Operador-2", cola, motor));
 
-        Thread despachador1 = new Thread(new Despachador("Despachador-1", cola, gestor));
-        Thread despachador2 = new Thread(new Despachador("Despachador-2", cola, gestor));
+        // Iniciar hilos de operadores y despachadores
+        Thread operador1 = new Thread(new Operador("Operador-1", cola, motor, dashboard));
+        Thread operador2 = new Thread(new Operador("Operador-2", cola, motor, dashboard));
 
-        Thread recalculador = new Thread(new RecalculadorPrioridades(cola, motor, 5000)); // Recalcula cada 5 segundos
+        Thread despachador1 = new Thread(new Despachador("Despachador-1", cola, gestor, dashboard));
+        Thread despachador2 = new Thread(new Despachador("Despachador-2", cola, gestor, dashboard));
+
+        Thread recalculador = new Thread(new RecalculadorPrioridades(cola, motor, 5000, dashboard)); // Recalcula cada 5 segundos
 
         // Iniciar los hilos
         operador1.start();

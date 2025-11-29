@@ -1,4 +1,4 @@
-package domain;
+package domain.emergencia;
 
 public final class MotorPrioridad {
 

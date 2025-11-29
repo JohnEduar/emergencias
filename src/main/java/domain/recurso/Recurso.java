@@ -1,4 +1,4 @@
-package domain;
+package domain.recurso;
 
 public class Recurso {
 
