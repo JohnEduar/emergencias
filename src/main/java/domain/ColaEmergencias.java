@@ -31,6 +31,7 @@ public final class ColaEmergencias {
     public void recalcularPrioridades(MotorPrioridad motor){
         long ahora = System.currentTimeMillis();
         List<Emergencia> lista = new ArrayList<>();
+        int tamañoActual = cola.size();
         cola.drainTo(lista); // Vaciar la cola temporalmente
         for (Emergencia e : lista) {
             double nuevoPuntaje = motor.calcular(e, ahora);

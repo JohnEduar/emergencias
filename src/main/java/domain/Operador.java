@@ -1,8 +1,11 @@
 package domain;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Operador implements Runnable {
+
+    private static final AtomicLong contadorGlobal = new AtomicLong(1); // Contador global para IDs únicos
 
     private final ColaEmergencias cola;
     private final MotorPrioridad motor;
@@ -18,7 +21,6 @@ public class Operador implements Runnable {
     @Override
     public void run() {
         try {
-            long id = 1;
             while (true) {
                 // Simular llegada de una nueva emergencia
                 Gravedad gravedad = switch (random.nextInt(4)) {
@@ -30,7 +32,8 @@ public class Operador implements Runnable {
                 double distanciaKm = 0.5 + random.nextDouble() * 15; // Entre 0.5 y 15 km
                 long ahora = System.currentTimeMillis();
 
-                Emergencia emergencia = new Emergencia(id++, gravedad, distanciaKm, ahora);
+                long id = contadorGlobal.getAndIncrement(); // ID único compartido
+                Emergencia emergencia = new Emergencia(id, gravedad, distanciaKm, ahora);
 
                 // Calcular puntaje inicial
                 double puntaje = motor.calcular(emergencia, ahora);
@@ -47,7 +50,7 @@ public class Operador implements Runnable {
                 }
 
                 // Esperar un tiempo antes de generar la siguiente emergencia
-                Thread.sleep(500 + random.nextInt(1000) );
+                Thread.sleep(500 + random.nextInt(1000));
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
